@@ -1,0 +1,44 @@
+.wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.button {
+    padding: 8px 13px;
+
+    color: var(--green);
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+
+    transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease;
+}
+
+.button:hover {
+    border-color: var(--green);
+}
+
+.button.saved {
+    color: var(--green);
+    background-color: var(--lime);
+    border-color: var(--lime);
+}
+
+.button:focus-visible {
+    outline: 3px solid var(--lime);
+    outline-offset: 3px;
+}
+
+.error {
+    max-width: 180px;
+    color: #a54827;
+    font-size: 0.7rem;
+}

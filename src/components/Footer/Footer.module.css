@@ -1,0 +1,149 @@
+.footer {
+    margin-top: auto;
+
+    color: #ffffff;
+    background-color: var(--green);
+}
+
+.content {
+    width: min(1180px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 64px 0;
+
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 48px;
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.brandMark {
+    width: 42px;
+    height: 42px;
+
+    display: grid;
+    place-items: center;
+
+    color: var(--green);
+    background-color: var(--lime);
+    border-radius: 50%;
+
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.brand strong,
+.brand small {
+    display: block;
+}
+
+.brand strong {
+    font-size: 1.1rem;
+}
+
+.brand small {
+    margin-top: 3px;
+
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.brandSection p {
+    max-width: 390px;
+    margin-top: 20px;
+
+    color: rgba(255, 255, 255, 0.72);
+    line-height: 1.7;
+}
+
+.linkSection,
+.locationSection {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.linkSection h2,
+.locationSection h2 {
+    margin-bottom: 6px;
+
+    color: var(--lime);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.linkSection a {
+    color: rgba(255, 255, 255, 0.78);
+}
+
+.linkSection a:hover {
+    color: var(--lime);
+}
+
+.locationSection p {
+    color: rgba(255, 255, 255, 0.78);
+}
+
+.actionLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-top: 8px;
+
+    color: var(--lime);
+    font-weight: 600;
+}
+
+.bottom {
+    width: min(1180px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 22px 0;
+
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+
+    color: rgba(255, 255, 255, 0.6);
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+
+    font-size: 0.75rem;
+}
+
+@media (max-width: 800px) {
+    .content {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .brandSection {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 620px) {
+    .content {
+        width: min(100% - 28px, 1180px);
+        padding: 48px 0;
+
+        grid-template-columns: 1fr;
+    }
+
+    .brandSection {
+        grid-column: auto;
+    }
+
+    .bottom {
+        width: min(100% - 28px, 1180px);
+
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}

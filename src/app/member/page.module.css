@@ -1,0 +1,114 @@
+.page {
+    width: min(1060px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 72px 0 90px;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(380px, 0.8fr);
+    gap: 64px;
+    align-items: center;
+}
+
+.eyebrow,
+.panelLabel {
+    display: block;
+    margin-bottom: 10px;
+
+    color: var(--text-soft);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.introduction h1 {
+    color: var(--green);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 500;
+    line-height: 1.08;
+}
+
+.introduction > p {
+    margin-top: 20px;
+
+    color: var(--text-soft);
+    font-size: 1.05rem;
+    line-height: 1.8;
+}
+
+.benefits {
+    margin-top: 30px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    list-style: none;
+}
+
+.benefits li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    color: var(--text);
+}
+
+.benefits span {
+    width: 25px;
+    height: 25px;
+
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+
+    color: var(--green);
+    background-color: var(--lime);
+    border-radius: 50%;
+
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.formPanel {
+    padding: 38px;
+
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+    }
+
+.formPanel h2 {
+    color: var(--green);
+    font-size: 1.8rem;
+}
+
+.formPanel p {
+    margin-top: 12px;
+    color: var(--text-soft);
+    line-height: 1.7;
+    }
+
+    @media (max-width: 850px) {
+    .page {
+        grid-template-columns: 1fr;
+    }
+    }
+
+    @media (max-width: 620px) {
+    .page {
+        width: min(100% - 28px, 1060px);
+        padding: 42px 0 60px;
+        gap: 42px;
+    }
+
+    .introduction h1 {
+        font-size: 2.5rem;
+    }
+
+    .formPanel {
+        padding: 28px 20px;
+        border-radius: 18px;
+    }
+}

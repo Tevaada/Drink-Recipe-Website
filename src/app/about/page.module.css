@@ -1,0 +1,184 @@
+.page {
+    width: min(1180px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 56px 0 80px;
+}
+
+.introduction {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 56px;
+    align-items: center;
+}
+
+.visual {
+    min-height: 520px;
+    padding: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+
+    color: var(--lime);
+    text-align: center;
+    background:
+        radial-gradient(
+        circle at top right,
+        var(--green-light),
+        transparent 45%
+        ),
+        var(--green);
+    border-radius: 28px;
+}
+
+.visualMark {
+    width: 120px;
+    height: 120px;
+
+    display: grid;
+    place-items: center;
+
+    border: 2px solid var(--lime);
+    border-radius: 50%;
+
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.visual p {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.eyebrow {
+    display: block;
+    margin-bottom: 10px;
+
+    color: var(--text-soft);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.content h1 {
+    color: var(--green);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 500;
+    line-height: 1.08;
+}
+
+.content p {
+    margin-top: 20px;
+
+    color: var(--text-soft);
+    font-size: 1.05rem;
+    line-height: 1.8;
+}
+
+.primaryButton {
+    display: inline-flex;
+    margin-top: 28px;
+    padding: 12px 20px;
+
+    color: #ffffff;
+    background-color: var(--green);
+    border-radius: 999px;
+
+    font-weight: 600;
+}
+
+.primaryButton:hover {
+    background-color: var(--green-light);
+}
+
+.principlesSection {
+    margin-top: 88px;
+}
+
+.sectionHeading {
+    max-width: 700px;
+    margin-bottom: 32px;
+}
+
+.sectionHeading h2 {
+    color: var(--green);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 500;
+}
+
+.principles {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.principle {
+    padding: 28px;
+
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+}
+
+.principle strong {
+    color: var(--lime-dark, #496f00);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+}
+
+.principle h3 {
+    margin-top: 18px;
+
+    color: var(--green);
+    font-size: 1.3rem;
+}
+
+.principle p {
+    margin-top: 10px;
+
+    color: var(--text-soft);
+    line-height: 1.7;
+}
+
+@media (max-width: 900px) {
+    .introduction {
+        grid-template-columns: 1fr;
+    }
+
+    .visual {
+        min-height: 400px;
+    }
+
+    .principles {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 620px) {
+    .page {
+        width: min(100% - 28px, 1180px);
+        padding: 34px 0 60px;
+    }
+
+    .visual {
+        min-height: 340px;
+        border-radius: 20px;
+    }
+
+    .content h1 {
+        font-size: 2.5rem;
+    }
+
+    .principlesSection {
+        margin-top: 60px;
+    }
+
+    .principles {
+        grid-template-columns: 1fr;
+    }
+}

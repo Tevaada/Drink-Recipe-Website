@@ -1,0 +1,146 @@
+.tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    margin-bottom: 28px;
+    padding: 4px;
+
+    background-color: #f0f1ee;
+    border-radius: 12px;
+}
+
+.tab {
+    padding: 10px;
+
+    color: var(--text-soft);
+    background: transparent;
+    border: 0;
+    border-radius: 9px;
+
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.activeTab {
+    color: var(--green);
+    background-color: var(--surface);
+    box-shadow: 0 2px 8px rgba(1, 45, 29, 0.08);
+}
+
+.heading > span {
+    color: var(--text-soft);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.heading h2 {
+    margin-top: 8px;
+
+    color: var(--green);
+    font-size: 1.8rem;
+}
+
+.heading p {
+    margin-top: 10px;
+    color: var(--text-soft);
+    line-height: 1.6;
+}
+
+.form {
+    margin-top: 26px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.field label {
+    color: var(--green);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.field input,
+.field select {
+    width: 100%;
+    padding: 12px 14px;
+
+    color: var(--text);
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    font: inherit;
+}
+
+.field input:focus,
+.field select:focus {
+    outline: 3px solid rgba(178, 247, 70, 0.4);
+    border-color: var(--green);
+}
+
+.field small {
+    color: var(--text-soft);
+    font-size: 0.72rem;
+}
+
+.error,
+.success {
+    padding: 12px 14px;
+    border-radius: 10px;
+
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+.error {
+    color: #8b2c17;
+    background-color: #fff0eb;
+}
+
+.success {
+    color: #166534;
+    background-color: #eaf8ee;
+}
+
+.submitButton {
+    padding: 13px 20px;
+
+    color: #ffffff;
+    background-color: var(--green);
+    border: 0;
+    border-radius: 10px;
+
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.submitButton:hover {
+    background-color: var(--green-light);
+}
+
+.switchButton {
+    width: 100%;
+    margin-top: 18px;
+    padding: 6px;
+
+    color: var(--green);
+    background: transparent;
+    border: 0;
+
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.switchButton:hover {
+    text-decoration: underline;
+}

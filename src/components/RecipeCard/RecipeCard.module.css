@@ -1,0 +1,139 @@
+.card {
+    overflow: hidden;
+
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: 0 6px 18px rgba(1, 45, 29, 0.06);
+
+    transition:
+        transform 180ms ease,
+        box-shadow 180ms ease;
+    }
+
+    .card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow);
+}
+
+.imageLink {
+    display: block;
+    height: 250px;
+    overflow: hidden;
+    background-color: #f0f1ee;
+    }
+
+    .image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+    transition: transform 300ms ease;
+    }
+
+    .card:hover .image {
+    transform: scale(1.04);
+}
+
+.content {
+    padding: 20px;
+    }
+
+    .topline,
+    .actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    }
+
+    .category,
+    .prepTime {
+    color: var(--text-soft);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.intensity {
+    padding: 4px 8px;
+    border-radius: 999px;
+
+    color: var(--green);
+    background-color: #eaf8ee;
+
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.high {
+    color: #a22a2a;
+    background-color: #fff0f0;
+    }
+
+    .medium {
+    color: #805d00;
+    background-color: #fff8d8;
+    }
+
+    .low {
+    color: #166534;
+    background-color: #eaf8ee;
+}
+
+.title {
+    margin: 14px 0 8px;
+
+    color: var(--green);
+    font-size: 1.5rem;
+    line-height: 1.25;
+    }
+
+    .title a:hover {
+    text-decoration: underline;
+    }
+
+    .description {
+    min-height: 66px;
+
+    color: var(--text-soft);
+    font-size: 0.9rem;
+    line-height: 1.55;
+}
+
+.actions {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+    }
+
+    .favoriteButton {
+    padding: 7px 12px;
+
+    color: var(--green);
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+
+    transition:
+        border-color 160ms ease,
+        background-color 160ms ease;
+    }
+
+    .favoriteButton:hover {
+    background-color: var(--lime);
+    border-color: var(--lime);
+}
+
+.imageLink:focus-visible,
+.title a:focus-visible,
+.favoriteButton:focus-visible {
+    outline: 3px solid var(--lime);
+    outline-offset: 3px;
+}

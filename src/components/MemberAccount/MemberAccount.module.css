@@ -1,0 +1,57 @@
+.account {
+    display: grid;
+    gap: 1.25rem;
+}
+
+.status {
+    color: #3f7d58;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.heading {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.heading h2 {
+    margin: 0;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+}
+
+.email {
+    margin: 0;
+    color: #667085;
+}
+
+.logoutButton {
+    width: 100%;
+    padding: 0.9rem 1.25rem;
+    border: 1px solid #b42318;
+    border-radius: 999px;
+    background: transparent;
+    color: #b42318;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.logoutButton:hover {
+    background: #b42318;
+    color: white;
+}
+
+.logoutButton:focus-visible {
+    outline: 3px solid rgba(180, 35, 24, 0.25);
+    outline-offset: 3px;
+}
+.goal {
+    margin: 0;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    background: #f3f7f4;
+    color: #315c41;
+    font-weight: 600;
+}

@@ -1,0 +1,205 @@
+    .siteHeader {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.92);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(14px);
+    }
+    @supports not (backdrop-filter: blur(14px)) {
+        .siteHeader {
+            background-color: var(--surface);
+        }
+    }
+
+    .headerContent {
+    width: min(1180px, calc(100% - 40px));
+    min-height: 72px;
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    }
+
+    .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    color: var(--green);
+    text-align: left;
+    }
+
+    .brandMark {
+    width: 40px;
+    height: 40px;
+
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+
+    color: var(--lime);
+    background-color: var(--green);
+    border-radius: 50%;
+
+    font-size: 0.9rem;
+    font-weight: 700;
+    }
+
+    .brandText {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    }
+
+    .brandText strong {
+    color: var(--green);
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    }
+
+    .brandText small {
+    color: var(--text-soft);
+    font-size: 0.55rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    }
+
+    .desktopNav {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+    align-self: stretch;
+    }
+
+    .navLink {
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+
+    color: var(--text-soft);
+    border-bottom: 3px solid transparent;
+
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+
+    transition:
+        color 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .navLink:hover {
+    color: var(--green);
+    border-bottom-color: var(--green-light);
+    }
+
+    .navLink.active {
+    color: var(--green);
+    border-bottom-color: var(--green);
+    }
+
+    .headerActions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    }
+
+    .memberButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 12px 20px;
+    color: #ffffff;
+    background-color: var(--green);
+    border-radius: 999px;
+
+    font-size: 0.85rem;
+    font-weight: 600;
+
+    transition:
+        background-color 160ms ease,
+        transform 160ms ease;
+    }
+
+    .memberButton:hover {
+    background-color: var(--green-light);
+    transform: translateY(-1px);
+    }
+
+    .mobileNavLabel {
+    display: none;
+    }
+
+    .mobileNav {
+    max-width: 150px;
+    padding: 9px 12px;
+
+    color: var(--green);
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    font-size: 0.8rem;
+    cursor: pointer;
+    }
+
+    .visuallyHidden {
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+    }
+
+    @media (max-width: 900px) {
+        .desktopNav {
+            display: none;
+        }
+
+        .mobileNavLabel {
+            display: block;
+        }
+    }
+
+    @media (max-width: 620px) {
+        .headerContent {
+            width: min(100% - 28px, 1180px);
+        }
+
+        .brandText {
+            display: none;
+        }
+
+        .memberButton {
+            padding: 10px 12px;
+            font-size: 0.75rem;
+        }
+
+        .mobileNav {
+            max-width: 125px;
+            padding: 8px;
+        }
+    }
+    .brand:focus-visible,
+    .navLink:focus-visible,
+    .memberButton:focus-visible,
+    .mobileNav:focus-visible {
+        outline: 3px solid var(--lime);
+        outline-offset: 3px;
+        }
