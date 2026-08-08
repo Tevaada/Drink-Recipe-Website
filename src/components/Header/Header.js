@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import styles from "./Header.module.css";
 
-    export default function Header() {
+    export default function Header({ initialUser = null }) {
         const pathname = usePathname();
         const router = useRouter();
 
@@ -97,8 +97,12 @@ import styles from "./Header.module.css";
                 </select>
             </label>
 
-            <Link href="/member" className={styles.memberButton}>
-                Join member
+            <Link
+                href="/member"
+                className={styles.memberButton}
+                title={initialUser?.displayName}
+            >
+                {initialUser?.displayName || "Join member"}
             </Link>
             </div>
         </div>

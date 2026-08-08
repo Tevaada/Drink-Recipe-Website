@@ -122,28 +122,6 @@
     white-space: pre-line;
 }
 
-.status,
-.error {
-    padding: 70px 24px;
-
-    text-align: center;
-    background-color: var(--surface);
-    border: 1px dashed var(--border);
-    border-radius: var(--radius);
-}
-
-.status {
-    color: var(--text-soft);
-}
-
-.error h1 {
-    margin-bottom: 12px;
-    color: #a54827;
-}
-
-.error p {
-    color: var(--text-soft);
-}
 .favoriteAction {
     margin-top: 22px;
 }

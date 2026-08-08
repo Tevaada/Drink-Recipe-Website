@@ -1,72 +1,10 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import Image from "next/image";
-import { getDrinkById } from "@/services/drinks";
 import styles from "./RecipeDetails.module.css";
 import FavoriteButton from "@/components/FavoriteButton/FavoriteButton";
+import NutritionPanel from "@/components/NutritionPanel/NutritionPanel";
+import PreparationTimer from "@/components/PreparationTimer/PreparationTimer";
 
-export default function RecipeDetails({ id }) {
-    const [drink, setDrink] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState("");
-
-    useEffect(() => {
-        let ignore = false;
-
-        async function loadDrink() {
-        try {
-            setIsLoading(true);
-            setError("");
-
-            const result = await getDrinkById(id);
-
-            if (!ignore) {
-            setDrink(result);
-            }
-        } catch (requestError) {
-            if (!ignore) {
-            setError(requestError.message);
-            }
-        } finally {
-            if (!ignore) {
-            setIsLoading(false);
-            }
-        }
-        }
-
-        loadDrink();
-
-        return () => {
-        ignore = true;
-        };
-    }, [id]);
-
-    if (isLoading) {
-        return (
-        <div className={styles.status} role="status">
-            Loading recipe details...
-        </div>
-        );
-    }
-
-    if (error) {
-        return (
-        <div className={styles.error} role="alert">
-            <h1>Unable to load recipe</h1>
-            <p>{error}</p>
-        </div>
-        );
-    }
-
-    if (!drink) {
-        return (
-        <div className={styles.status}>
-            Recipe not found.
-        </div>
-        );
-    }
-
+export default function RecipeDetails({ drink }) {
     return (
         <article className={styles.details}>
             <div className={styles.imageWrapper}>
@@ -141,6 +79,10 @@ export default function RecipeDetails({ id }) {
                     {drink.instructions}
                 </p>
                 </section>
+
+                <PreparationTimer />
+
+                <NutritionPanel drinkName={drink.title} />
             </div>
         </article>
     );

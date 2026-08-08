@@ -68,21 +68,6 @@
     text-transform: uppercase;
 }
 
-.high {
-    color: #a22a2a;
-    background-color: #fff0f0;
-    }
-
-    .medium {
-    color: #805d00;
-    background-color: #fff8d8;
-    }
-
-    .low {
-    color: #166534;
-    background-color: #eaf8ee;
-}
-
 .title {
     margin: 14px 0 8px;
 
@@ -109,31 +94,8 @@
     border-top: 1px solid var(--border);
     }
 
-    .favoriteButton {
-    padding: 7px 12px;
-
-    color: var(--green);
-    background-color: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 999px;
-
-    font-size: 0.75rem;
-    font-weight: 600;
-    cursor: pointer;
-
-    transition:
-        border-color 160ms ease,
-        background-color 160ms ease;
-    }
-
-    .favoriteButton:hover {
-    background-color: var(--lime);
-    border-color: var(--lime);
-}
-
 .imageLink:focus-visible,
-.title a:focus-visible,
-.favoriteButton:focus-visible {
+.title a:focus-visible {
     outline: 3px solid var(--lime);
     outline-offset: 3px;
 }

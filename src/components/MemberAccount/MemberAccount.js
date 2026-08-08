@@ -1,6 +1,7 @@
 import { logoutAccount } from "@/app/member/actions";
 import styles from "./MemberAccount.module.css";
 import ProfileEditor from "@/components/ProfileEditor/ProfileEditor";
+import DeleteAccountButton from "@/components/DeleteAccountButton/DeleteAccountButton";
 
 export default function MemberAccount({user, profile,}) {
     const displayName =
@@ -40,6 +41,7 @@ export default function MemberAccount({user, profile,}) {
                     Log out
                 </button>
             </form>
+            <DeleteAccountButton />
         </div>
     );
 }

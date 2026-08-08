@@ -1,6 +1,8 @@
 import Link from "next/link";
 import RecipeDetails from "@/components/RecipeDetails/RecipeDetails";
 import styles from "./page.module.css";
+import { notFound } from "next/navigation";
+import { fetchDrinkById } from "@/lib/cocktailDb";
 
 export const metadata = {
     title: "Recipe Details | Drink Recipe",
@@ -9,6 +11,16 @@ export const metadata = {
 
 export default async function RecipePage({ params }) {
     const { id } = await params;
+
+    if (!/^\d+$/.test(id)) {
+        notFound();
+    }
+
+    const drink = await fetchDrinkById(id);
+
+    if (!drink) {
+        notFound();
+    }
 
     return (
         <div className={styles.page}>
@@ -20,7 +32,7 @@ export default async function RecipePage({ params }) {
             Back to recipes
         </Link>
 
-        <RecipeDetails id={id} />
+        <RecipeDetails drink={drink} />
         </div>
     );
 }

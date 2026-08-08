@@ -1,39 +1,95 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { isFavorite, toggleFavorite,} from "@/services/favorites";
+import {isFavorite, toggleFavorite,} from "@/services/favorites";
+import {isMemberFavorite, toggleMemberFavorite, } from "@/services/memberFavorites";
 import styles from "./FavoriteButton.module.css";
 
 export default function FavoriteButton({recipe, unsavedLabel = "Save",}) {
     const [saved, setSaved] = useState(false);
     const [error, setError] = useState("");
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        function synchronizeFavorite() {
-            setSaved(isFavorite(recipe.id));
+        let cancelled = false;
+
+        async function synchronizeFavorite() {
+            try {
+                const memberStatus =
+                    await isMemberFavorite(recipe.id);
+
+                if (cancelled) {
+                    return;
+                }
+
+                setSaved(
+                    memberStatus.authenticated
+                        ? memberStatus.saved
+                        : isFavorite(recipe.id),
+                );
+            } catch (loadError) {
+                if (!cancelled) {
+                    setError(loadError.message);
+                }
+            } finally {
+                if (!cancelled) {
+                    setIsLoading(false);
+                }
+            }
         }
 
         synchronizeFavorite();
 
-        window.addEventListener("favoriteschange", synchronizeFavorite,);
+        window.addEventListener(
+            "favoriteschange",
+            synchronizeFavorite,
+        );
 
-        window.addEventListener("storage", synchronizeFavorite,);
+        window.addEventListener(
+            "storage",
+            synchronizeFavorite,
+        );
 
         return () => {
-        window.removeEventListener( "favoriteschange", synchronizeFavorite,);
+            cancelled = true;
 
-        window.removeEventListener( "storage", synchronizeFavorite,);};
+            window.removeEventListener(
+                "favoriteschange",
+                synchronizeFavorite,
+            );
+
+            window.removeEventListener(
+                "storage",
+                synchronizeFavorite,
+            );
+        };
     }, [recipe.id]);
 
-    function handleClick() {
+    async function handleClick() {
         try {
-        setError("");
+            setError("");
+            setIsLoading(true);
 
-        const result = toggleFavorite(recipe);
+            const memberResult =
+                await toggleMemberFavorite(recipe);
 
-        setSaved(result.saved);
+            if (memberResult.authenticated) {
+                setSaved(memberResult.saved);
+
+                window.dispatchEvent(
+                    new Event("favoriteschange"),
+                );
+
+                return;
+            }
+
+            const guestResult = toggleFavorite(recipe);
+
+            setSaved(guestResult.saved);
         } catch (saveError) {
-        setError(saveError.message);
+            setError(saveError.message);
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -45,6 +101,7 @@ export default function FavoriteButton({recipe, unsavedLabel = "Save",}) {
             saved ? styles.saved : ""
             }`}
             onClick={handleClick}
+            disabled={isLoading}
             aria-pressed={saved}
             aria-label={
             saved
@@ -52,7 +109,11 @@ export default function FavoriteButton({recipe, unsavedLabel = "Save",}) {
                 : `Save ${recipe.title} to favorites`
             }
         >
-            {saved ? "Saved" : unsavedLabel}
+            {isLoading
+                ? "Loading..."
+                : saved
+                    ? "Saved"
+                    : unsavedLabel}
         </button>
 
         {error && (

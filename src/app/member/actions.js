@@ -3,6 +3,59 @@
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 
+const ALLOWED_GOALS = new Set([
+    "Explore drinks",
+    "Focus",
+    "Recovery",
+    "Hydration",
+    "Alcohol-free",
+]);
+
+function textValue(value) {
+    return typeof value === "string"
+        ? value.trim()
+        : "";
+}
+
+function passwordValue(value) {
+    return typeof value === "string"
+        ? value
+        : "";
+}
+
+function isValidEmail(email) {
+    return (
+        email.length <= 254 &&
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+    );
+}
+
+function signUpErrorMessage(error) {
+    const messages = {
+        user_already_exists:
+            "An account already exists for this email. Please log in instead.",
+        email_exists:
+            "An account already exists for this email. Please log in instead.",
+        weak_password:
+            "The password does not meet the account security requirements.",
+        email_address_invalid:
+            "Please enter a valid email address.",
+        over_email_send_rate_limit:
+            "Too many confirmation emails were requested. Please wait a few minutes and try again.",
+        over_request_rate_limit:
+            "Too many account requests were made. Please wait a few minutes and try again.",
+        signup_disabled:
+            "New account registration is currently disabled.",
+        email_provider_disabled:
+            "Email registration is currently disabled.",
+    };
+
+    return (
+        messages[error?.code] ||
+        "Unable to create the account. Check the Supabase authentication settings and try again."
+    );
+}
+
 async function saveProfile(supabase, user) {
     const metadata = user.user_metadata || {};
 
@@ -25,11 +78,10 @@ async function saveProfile(supabase, user) {
 
 
 export async function signUpAccount(values) {
-    const name = values.name?.trim();
-    const email = values.email?.trim();
-    const password = values.password;
-    const focusGoal =
-        values.focusGoal || "Explore drinks";
+    const name = textValue(values?.name);
+    const email = textValue(values?.email);
+    const password = passwordValue(values?.password);
+    const focusGoal = textValue(values?.focusGoal);
 
     if (!name) {
         return {
@@ -37,16 +89,28 @@ export async function signUpAccount(values) {
         };
     }
 
-    if (!email) {
+    if (name.length > 80) {
         return {
-            error: "Please enter your email address.",
+            error: "Your name must be 80 characters or fewer.",
         };
     }
 
-    if (!password || password.length < 6) {
+    if (!isValidEmail(email)) {
+        return {
+            error: "Please enter a valid email address.",
+        };
+    }
+
+    if (password.length < 6 || password.length > 128) {
         return {
             error:
-                "Your password must contain at least 6 characters.",
+                "Your password must contain between 6 and 128 characters.",
+        };
+    }
+
+    if (!ALLOWED_GOALS.has(focusGoal)) {
+        return {
+            error: "Please select a valid interest.",
         };
     }
 
@@ -66,44 +130,82 @@ export async function signUpAccount(values) {
 
     if (error) {
         return {
-            error: error.message,
+            error: signUpErrorMessage(error),
         };
     }
+
+    let profileWarning = "";
 
     if (data.session && data.user) {
-    const profileError =
-        await saveProfile(supabase, data.user);
+        const profileError =
+            await saveProfile(supabase, data.user);
 
-    if (profileError) {
-        return {
-            error:
-                "Your account was created, but the profile could not be saved.",
-        };
+        if (profileError) {
+            profileWarning =
+                " Profile details could not be synchronized yet.";
+        }
     }
-}
 
     return {
         success: true,
         needsEmailConfirmation: !data.session,
-        message: data.session
-            ? "Your account was created successfully."
-            : "Account created. Check your email to confirm your account.",
+        message: (
+            data.session
+                ? "Your account was created successfully."
+                : "Account created. Check your email to confirm your account."
+        ) + profileWarning,
+    };
+}
+export async function deleteAccount() {
+    const supabase = await createClient();
+
+    const {
+        data: { user },
+        error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError || !user) {
+        return {
+            error:
+                "You must be logged in to delete your account.",
+        };
+    }
+
+    const { error } = await supabase.rpc(
+        "delete_account",
+    );
+
+    if (error) {
+        return {
+            error:
+                "Your account could not be deleted. Please try again.",
+        };
+    }
+
+    await supabase.auth.signOut();
+
+    revalidatePath("/", "layout");
+
+    return {
+        success: true,
+        message:
+            "Your account and saved favorites were permanently deleted.",
     };
 }
 
 export async function loginAccount(values) {
-    const email = values.email?.trim();
-    const password = values.password;
+    const email = textValue(values?.email);
+    const password = passwordValue(values?.password);
 
-    if (!email) {
+    if (!isValidEmail(email)) {
         return {
-            error: "Please enter your email address.",
+            error: "Please enter a valid email address.",
         };
     }
 
-    if (!password) {
+    if (!password || password.length > 128) {
         return {
-            error: "Please enter your password.",
+            error: "Please enter a valid password.",
         };
     }
 
@@ -120,36 +222,29 @@ export async function loginAccount(values) {
             error: "The email or password is incorrect.",
         };
     }
-    
-    if (data.user) {
-    const profileError =
-        await saveProfile(supabase, data.user);
 
-    if (profileError) {
-        return {
-            error:
-                "You logged in, but your profile could not be saved.",
-        };
+    let profileWarning = "";
+
+    if (data.user) {
+        const profileError =
+            await saveProfile(supabase, data.user);
+
+        if (profileError) {
+            profileWarning =
+                " Profile details could not be synchronized yet.";
+        }
     }
-}
 
     return {
         success: true,
-        message: "You logged in successfully.",
+        message:
+            `You logged in successfully.${profileWarning}`,
     };
 }
 
 export async function updateProfile(values) {
-    const displayName = values.displayName?.trim();
-    const wellnessGoal = values.wellnessGoal;
-
-    const allowedGoals = [
-        "Explore drinks",
-        "Focus",
-        "Recovery",
-        "Hydration",
-        "Alcohol-free",
-    ];
+    const displayName = textValue(values?.displayName);
+    const wellnessGoal = textValue(values?.wellnessGoal);
 
     if (!displayName) {
         return {
@@ -163,7 +258,7 @@ export async function updateProfile(values) {
         };
     }
 
-    if (!allowedGoals.includes(wellnessGoal)) {
+    if (!ALLOWED_GOALS.has(wellnessGoal)) {
         return {
             error: "Please select a valid interest.",
         };
@@ -184,12 +279,12 @@ export async function updateProfile(values) {
 
     const { error } = await supabase
         .from("profiles")
-        .update({
+        .upsert({
+            id: user.id,
             display_name: displayName,
             wellness_goal: wellnessGoal,
             updated_at: new Date().toISOString(),
-        })
-        .eq("id", user.id);
+        });
 
     if (error) {
         return {

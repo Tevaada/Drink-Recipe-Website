@@ -1,11 +1,20 @@
 import { createClient } from "@/lib/supabase/client";
+import { clearFavorites, getFavorites,} from "@/services/favorites";
 
 function normalizeFavorite(row) {
     return {
         id: row.drink_id,
         title: row.drink_name,
-        image: row.drink_image,
-        category: row.category,
+        image:
+            row.drink_image ||
+            "/images/drink-placeholder.svg",
+        category:
+            row.category ||
+            "Saved drink",
+        description:
+            "Open this saved recipe to view its ingredients and instructions.",
+        alcoholic: "Saved drink",
+        glass: "Recipe",
     };
 }
 
@@ -132,5 +141,55 @@ export async function toggleMemberFavorite(recipe) {
     return {
         authenticated: true,
         saved: true,
+    };
+}
+
+export async function migrateGuestFavorites() {
+    const guestFavorites = getFavorites();
+
+    if (guestFavorites.length === 0) {
+        return {
+            migrated: 0,
+        };
+    }
+
+    const supabase = createClient();
+
+    const {
+        data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+        return {
+            migrated: 0,
+        };
+    }
+
+    const databaseRows = guestFavorites.map(
+        (recipe) => ({
+            user_id: user.id,
+            drink_id: recipe.id,
+            drink_name: recipe.title,
+            drink_image: recipe.image,
+            category: recipe.category,
+        }),
+    );
+
+    const { error } = await supabase
+        .from("favorites")
+        .upsert(databaseRows, {
+            onConflict: "user_id,drink_id",
+        });
+
+    if (error) {
+        throw new Error(
+            "Your guest favorites could not be moved to your account.",
+        );
+    }
+
+    clearFavorites();
+
+    return {
+        migrated: databaseRows.length,
     };
 }

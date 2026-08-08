@@ -76,6 +76,47 @@ export default function HomeContent() {
         <div className={styles.page}>
             <HeroCarousel recipes={recipes} />
 
+            {recipes.length > 0 && (
+                <section
+                    className={styles.trendingSection}
+                    aria-labelledby="trending-title"
+                >
+                    <div className={styles.sectionHeading}>
+                        <div>
+                            <span className={styles.eyebrow}>
+                                Trending now
+                            </span>
+
+                            <h2
+                                id="trending-title"
+                                className={styles.sectionTitle}
+                            >
+                                Popular drink recipes
+                            </h2>
+                        </div>
+
+                        <p className={styles.scrollHint}>
+                            Scroll to explore <span aria-hidden="true">↔</span>
+                        </p>
+                    </div>
+
+                    <div
+                        className={styles.trendingTrack}
+                        tabIndex={0}
+                        aria-label="Trending recipes. Scroll horizontally to explore."
+                    >
+                        {recipes.slice(0, 8).map((recipe) => (
+                            <div
+                                key={recipe.id}
+                                className={styles.trendingCard}
+                            >
+                                <RecipeCard recipe={recipe} />
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            )}
+
             <div className={styles.categorySections}>
                 {categories.map((category) => {
                 const categoryRecipes = recipes

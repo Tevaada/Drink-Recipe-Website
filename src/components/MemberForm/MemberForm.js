@@ -2,10 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import {
-    loginAccount,
-    signUpAccount,
-} from "@/app/member/actions";
+import {loginAccount, signUpAccount,} from "@/app/member/actions";
+import {migrateGuestFavorites,} from "@/services/memberFavorites";
 import styles from "./MemberForm.module.css";
 
 export default function MemberForm() {
@@ -57,38 +55,85 @@ export default function MemberForm() {
         if (mode === "signup") {
             setIsLoading(true);
 
-            const result = await signUpAccount(values);
+            try {
+                const result =
+                    await signUpAccount(values);
 
-            setIsLoading(false);
+                if (result.error) {
+                    setError(result.error);
+                    return;
+                }
+
+                let successMessage = result.message;
+
+                if (!result.needsEmailConfirmation) {
+                    const migrationResult =
+                        await migrateGuestFavorites();
+
+                    if (migrationResult.migrated > 0) {
+                        successMessage +=
+                            ` ${migrationResult.migrated} guest favorite${
+                                migrationResult.migrated === 1
+                                    ? ""
+                                    : "s"
+                            } moved to your account.`;
+                    }
+                }
+
+                setMessage(successMessage);
+                form.reset();
+
+                if (!result.needsEmailConfirmation) {
+                    router.refresh();
+                }
+            } catch (signupError) {
+                setError(
+                    signupError.message ||
+                    "Something went wrong. Please try again.",
+                );
+            } finally {
+                setIsLoading(false);
+            }
+
+            return;
+        }
+        setIsLoading(true);
+
+        try {
+            const result = await loginAccount(values);
 
             if (result.error) {
                 setError(result.error);
                 return;
             }
 
-            setMessage(result.message);
+            const migrationResult =
+                await migrateGuestFavorites();
+
+            const migrationMessage =
+                migrationResult.migrated > 0
+                    ? ` ${migrationResult.migrated} guest favorite${
+                        migrationResult.migrated === 1
+                            ? ""
+                            : "s"
+                    } moved to your account.`
+                    : "";
+
+            setMessage(
+                `${result.message}${migrationMessage}`,
+            );
+
             form.reset();
+            router.refresh();
+        } catch (loginError) {
+            setError(
+                loginError.message ||
+                "Something went wrong. Please try again.",
+            );
 
-            if (!result.needsEmailConfirmation) {
-                router.refresh();
-            }
-
-            return;
-            
+        } finally {
+            setIsLoading(false);
         }
-        setIsLoading(true);
-
-        const result = await loginAccount(values);
-
-        setIsLoading(false);
-
-        if (result.error) {
-            setError(result.error);
-            return;
-        }
-        setMessage(result.message);
-        form.reset();
-        router.refresh();
     }
 
     return (

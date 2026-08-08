@@ -9,8 +9,7 @@
     align-items: center;
 }
 
-.eyebrow,
-.panelLabel {
+.eyebrow {
     display: block;
     margin-bottom: 10px;
 

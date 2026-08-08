@@ -56,3 +56,14 @@ export function toggleFavorite(recipe) {
         favorites: updatedFavorites,
     };
 }
+export function clearFavorites() {
+    if (typeof window === "undefined") {
+        return;
+    }
+
+    localStorage.removeItem(STORAGE_KEY);
+
+    window.dispatchEvent(
+        new Event("favoriteschange"),
+    );
+}

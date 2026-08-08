@@ -1,0 +1,79 @@
+.loading {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 2rem;
+    padding: 3rem 0;
+}
+
+.imageSkeleton,
+.shortLine,
+.titleLine,
+.textLine {
+    border-radius: 0.75rem;
+    background: linear-gradient(
+        90deg,
+        #edf1ee 25%,
+        #f7f9f7 50%,
+        #edf1ee 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+}
+
+.imageSkeleton {
+    min-height: 32rem;
+}
+
+.content {
+    display: grid;
+    align-content: center;
+    gap: 1rem;
+}
+
+.shortLine {
+    width: 30%;
+    height: 1rem;
+}
+
+.titleLine {
+    width: 80%;
+    height: 3rem;
+}
+
+.textLine {
+    width: 100%;
+    height: 1rem;
+}
+
+.message {
+    color: #667085;
+}
+
+@keyframes shimmer {
+    from {
+        background-position: 200% 0;
+    }
+
+    to {
+        background-position: -200% 0;
+    }
+}
+
+@media (max-width: 48rem) {
+    .loading {
+        grid-template-columns: 1fr;
+    }
+
+    .imageSkeleton {
+        min-height: 22rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .imageSkeleton,
+    .shortLine,
+    .titleLine,
+    .textLine {
+        animation: none;
+    }
+}

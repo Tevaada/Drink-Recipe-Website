@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import RecipeCard from "@/components/RecipeCard/RecipeCard";
-import { searchDrinks } from "@/services/drinks";
+import { loadDrinks } from "@/services/drinks";
 import styles from "./RecipeExplorer.module.css";
 
 export default function RecipeExplorer({initialCategory = "all",}) {
@@ -13,6 +13,9 @@ export default function RecipeExplorer({initialCategory = "all",}) {
     const [query, setQuery] = useState("");
     const [selectedCategory, setSelectedCategory] = useState(initialCategory);
     const [activeQuery, setActiveQuery] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const [hasMore, setHasMore] = useState(false);
+    const [isLoadingMore, setIsLoadingMore] = useState(false);
 
     useEffect(() => {
         let ignore = false;
@@ -22,10 +25,12 @@ export default function RecipeExplorer({initialCategory = "all",}) {
                 setIsLoading(true);
                 setError("");
 
-                const drinks = await searchDrinks();
+                const result = await loadDrinks();
 
                 if (!ignore) {
-                    setRecipes(drinks);
+                    setRecipes(result.drinks);
+                    setCurrentPage(result.page);
+                    setHasMore(result.hasMore);
                 }
             } catch (requestError) {
                 if (!ignore) {
@@ -61,11 +66,13 @@ export default function RecipeExplorer({initialCategory = "all",}) {
             setIsLoading(true);
             setError("");
 
-            const drinks = await searchDrinks(searchQuery);
+            const result = await loadDrinks(searchQuery);
 
-            setRecipes(drinks);
+            setRecipes(result.drinks);
             setSelectedCategory("all");
             setActiveQuery(searchQuery.trim());
+            setCurrentPage(result.page);
+            setHasMore(result.hasMore);
         } catch (requestError) {
 
             setError(requestError.message);
@@ -73,6 +80,33 @@ export default function RecipeExplorer({initialCategory = "all",}) {
             
         } finally {
             setIsLoading(false);
+        }
+    }
+
+    async function handleLoadMore() {
+        try {
+            setIsLoadingMore(true);
+            setError("");
+
+            const result = await loadDrinks("", currentPage + 1);
+
+            setRecipes((currentRecipes) => {
+                const uniqueRecipes = new Map(
+                    currentRecipes.map((recipe) => [recipe.id, recipe]),
+                );
+
+                result.drinks.forEach((recipe) => {
+                    uniqueRecipes.set(recipe.id, recipe);
+                });
+
+                return [...uniqueRecipes.values()];
+            });
+            setCurrentPage(result.page);
+            setHasMore(result.hasMore);
+        } catch (requestError) {
+            setError(requestError.message);
+        } finally {
+            setIsLoadingMore(false);
         }
     }
     const categories = [...new Set(recipes.map((recipe) => recipe.category).filter(Boolean),),].sort();
@@ -154,9 +188,26 @@ export default function RecipeExplorer({initialCategory = "all",}) {
                             : "No drink recipes were found."}
                 </div>
             ) : (
-            <div className={styles.recipeGrid}>
-                {filteredRecipes.map((recipe) => (<RecipeCard key={recipe.id} recipe={recipe}/>))}
-            </div>
+            <>
+                <div className={styles.recipeGrid}>
+                    {filteredRecipes.map((recipe) => (<RecipeCard key={recipe.id} recipe={recipe}/>))}
+                </div>
+
+                {!activeQuery && hasMore && (
+                    <div className={styles.loadMoreArea}>
+                        <button
+                            type="button"
+                            className={styles.loadMoreButton}
+                            onClick={handleLoadMore}
+                            disabled={isLoadingMore}
+                        >
+                            {isLoadingMore
+                                ? "Loading more recipes..."
+                                : "Load more recipes"}
+                        </button>
+                    </div>
+                )}
+            </>
             )}
         </section>
     );

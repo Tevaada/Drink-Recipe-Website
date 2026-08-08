@@ -1,0 +1,79 @@
+.page {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: start;
+    width: min(1180px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: clamp(3rem, 7vw, 6rem) 0;
+}
+
+.introduction {
+    display: grid;
+    gap: 1.25rem;
+}
+
+.eyebrow {
+    color: #3f7d58;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.introduction h1 {
+    max-width: 11ch;
+    margin: 0;
+    color: var(--green);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    line-height: 1.05;
+}
+
+.introduction > p {
+    max-width: 36rem;
+    margin: 0;
+    color: #667085;
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+.information {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.information div {
+    display: grid;
+    gap: 0.25rem;
+    padding: 1rem;
+    border-left: 3px solid #3f7d58;
+    background: #f3f7f4;
+}
+
+.information strong {
+    color: #315c41;
+}
+
+.information span {
+    color: #667085;
+}
+
+.formPanel {
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    border: 1px solid #e4e7ec;
+    border-radius: 1.5rem;
+    background: white;
+    box-shadow: 0 1.25rem 3rem rgba(16, 24, 40, 0.08);
+}
+
+@media (max-width: 50rem) {
+    .page {
+        grid-template-columns: 1fr;
+        width: min(100% - 28px, 1180px);
+    }
+
+    .introduction h1 {
+        max-width: none;
+    }
+}

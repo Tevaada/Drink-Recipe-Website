@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-labelledby="title description">
+  <title id="title">Drink placeholder</title>
+  <desc id="description">An abstract green drink illustration.</desc>
+  <rect width="800" height="600" fill="#eef5ef"/>
+  <circle cx="400" cy="255" r="170" fill="#d8eadc"/>
+  <path d="M300 145h200l-28 300c-3 35-32 62-67 62h-10c-35 0-64-27-67-62z" fill="#fff" stroke="#315c41" stroke-width="18"/>
+  <path d="M330 286h140l-14 151c-2 20-19 35-39 35h-34c-20 0-37-15-39-35z" fill="#7fb28b"/>
+  <path d="M466 90l-86 211" fill="none" stroke="#315c41" stroke-linecap="round" stroke-width="16"/>
+  <circle cx="326" cy="286" r="26" fill="#f5cb5c"/>
+</svg>

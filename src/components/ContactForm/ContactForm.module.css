@@ -1,13 +1,6 @@
-.editor {
+.form {
     display: grid;
-    gap: 1rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid #e4e7ec;
-}
-
-.title {
-    margin: 0;
-    font-size: 1.15rem;
+    gap: 1.25rem;
 }
 
 .field {
@@ -16,15 +9,15 @@
 }
 
 .field label {
+    color: #344054;
     font-size: 0.9rem;
     font-weight: 700;
-    color: #344054;
 }
 
 .field input,
-.field select {
+.field textarea {
     width: 100%;
-    padding: 0.8rem 0.9rem;
+    padding: 0.85rem 1rem;
     border: 1px solid #d0d5dd;
     border-radius: 0.75rem;
     background: white;
@@ -32,25 +25,18 @@
     font: inherit;
 }
 
+.field textarea {
+    min-height: 10rem;
+    resize: vertical;
+}
+
 .field input:focus,
-.field select:focus {
+.field textarea:focus {
     border-color: #3f7d58;
     outline: 3px solid rgba(63, 125, 88, 0.15);
 }
 
-.error {
-    margin: 0;
-    color: #b42318;
-    font-size: 0.9rem;
-}
-
-.success {
-    margin: 0;
-    color: #287a4d;
-    font-size: 0.9rem;
-}
-
-.saveButton {
+.submitButton {
     padding: 0.9rem 1.25rem;
     border: 0;
     border-radius: 999px;
@@ -61,16 +47,30 @@
     cursor: pointer;
 }
 
-.saveButton:hover {
+.submitButton:hover {
     background: #244a33;
 }
 
-.saveButton:disabled {
+.submitButton:disabled {
     cursor: wait;
     opacity: 0.65;
 }
 
-.saveButton:focus-visible {
+.submitButton:focus-visible {
     outline: 3px solid rgba(49, 92, 65, 0.3);
     outline-offset: 3px;
+}
+
+.message {
+    margin: 0;
+    padding: 0.85rem 1rem;
+    border-radius: 0.75rem;
+    background: #ecf8f0;
+    color: #287a4d;
+    font-weight: 600;
+}
+
+.message.error {
+    background: #fff1f0;
+    color: #a54827;
 }

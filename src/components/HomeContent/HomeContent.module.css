@@ -3,29 +3,6 @@
     margin: 0 auto;
     padding: 56px 0 80px;
 }
-.hero {
-    position: relative;
-
-    min-height: 620px;
-    padding: 60px 24px;
-
-    display: grid;
-    place-items: center;
-
-    overflow: hidden;
-    border-radius: 28px;
-
-    background-image:
-    linear-gradient(
-        rgba(1, 45, 29, 0.3),
-        rgba(1, 45, 29, 0.55)
-    ),
-    url("/images/hero-drink.jpg");
-
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-}
 .sectionHeading {
     display: flex;
     align-items: flex-end;
@@ -71,6 +48,55 @@
     gap: 28px;
 }
 
+.trendingSection {
+    margin-top: 72px;
+}
+
+.scrollHint {
+    flex-shrink: 0;
+    color: var(--text-soft);
+    font-size: 0.85rem;
+}
+
+.trendingTrack {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(280px, 340px);
+    gap: 24px;
+
+    padding: 4px 2px 18px;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: x proximity;
+    scrollbar-color: var(--green-light) var(--border);
+    scrollbar-width: thin;
+}
+
+.trendingTrack:focus-visible {
+    outline: 2px solid var(--green);
+    outline-offset: 6px;
+    border-radius: 4px;
+}
+
+.trendingTrack::-webkit-scrollbar {
+    height: 10px;
+}
+
+.trendingTrack::-webkit-scrollbar-track {
+    background: var(--border);
+    border-radius: 999px;
+}
+
+.trendingTrack::-webkit-scrollbar-thumb {
+    background: var(--green-light);
+    border-radius: 999px;
+}
+
+.trendingCard {
+    min-width: 0;
+    scroll-snap-align: start;
+}
+
 .categorySections {
     display: flex;
     flex-direction: column;
@@ -112,20 +138,15 @@
         padding-top: 34px;
     }
 
-    .hero {
-        min-height: 500px;
-        padding: 32px 20px;
-        border-radius: 20px;
-    }
 }
 
 @media (max-width: 900px) {
     .recipeGrid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-    }
+}
 
-    @media (max-width: 620px) {
+@media (max-width: 620px) {
     .sectionHeading {
         align-items: flex-start;
         flex-direction: column;
@@ -135,54 +156,16 @@
         font-size: 1.8rem;
     }
 
-    .recipeGrid {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-    a.primary:hover {
-        background: var(--button-primary-hover);
-        border-color: transparent;
+    .trendingSection {
+        margin-top: 48px;
     }
 
-    a.secondary:hover {
-        background: var(--button-secondary-hover);
-        border-color: transparent;
-    }
-}
-
-@media (max-width: 600px) {
-    .main {
-        padding: 48px 24px;
-    }
-
-    .intro {
+    .trendingTrack {
+        grid-auto-columns: minmax(260px, 86vw);
         gap: 16px;
     }
 
-    .intro h1 {
-        font-size: 32px;
-        line-height: 40px;
-        letter-spacing: -1.92px;
-    }
-}
-
-@media (prefers-color-scheme: dark) {
-    .logo {
-        filter: invert();
-    }
-
-    .page {
-        --background: #000;
-        --foreground: #000;
-
-        --text-primary: #ededed;
-        --text-secondary: #999;
-
-        --button-primary-hover: #ccc;
-        --button-secondary-hover: #1a1a1a;
-        --button-secondary-border: #1a1a1a;
+    .recipeGrid {
+        grid-template-columns: 1fr;
     }
 }

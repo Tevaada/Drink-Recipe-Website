@@ -4,25 +4,69 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import RecipeCard from "@/components/RecipeCard/RecipeCard";
 import { getFavorites } from "@/services/favorites";
+import { getMemberFavorites } from "@/services/memberFavorites";
 import styles from "./FavoritesContent.module.css";
 
 export default function FavoritesContent() {
     const [favorites, setFavorites] = useState([]);
     const [hasLoaded, setHasLoaded] = useState(false);
+    const [error, setError] = useState("");
 
     useEffect(() => {
-        function synchronizeFavorites() {
-            setFavorites(getFavorites());
-            setHasLoaded(true);
+        let cancelled = false;
+
+        async function synchronizeFavorites() {
+            try {
+                setError("");
+
+                const memberResult =
+                    await getMemberFavorites();
+
+                if (cancelled) {
+                    return;
+                }
+
+                const nextFavorites =
+                    memberResult.authenticated
+                        ? memberResult.favorites
+                        : getFavorites();
+
+                setFavorites(nextFavorites);
+            } catch (loadError) {
+                if (!cancelled) {
+                    setError(loadError.message);
+                }
+            } finally {
+                if (!cancelled) {
+                    setHasLoaded(true);
+                }
             }
+        }
 
-            synchronizeFavorites();
-            window.addEventListener("favoriteschange", synchronizeFavorites,);
-            window.addEventListener("storage", synchronizeFavorites,);
+        synchronizeFavorites();
 
-            return () => {
-            window.removeEventListener("favoriteschange", synchronizeFavorites,);
-            window.removeEventListener("storage", synchronizeFavorites,);
+        window.addEventListener(
+            "favoriteschange",
+            synchronizeFavorites,
+        );
+
+        window.addEventListener(
+            "storage",
+            synchronizeFavorites,
+        );
+
+        return () => {
+            cancelled = true;
+
+            window.removeEventListener(
+                "favoriteschange",
+                synchronizeFavorites,
+            );
+
+            window.removeEventListener(
+                "storage",
+                synchronizeFavorites,
+            );
         };
     }, []);
 
@@ -30,6 +74,14 @@ export default function FavoritesContent() {
         return (
             <div className={styles.status} role="status">
                 Loading favorites...
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className={styles.status} role="alert">
+                {error}
             </div>
         );
     }

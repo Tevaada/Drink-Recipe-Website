@@ -114,6 +114,7 @@
     }
 
     .memberButton {
+    max-width: 180px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -125,6 +126,9 @@
 
     font-size: 0.85rem;
     font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     transition:
         background-color 160ms ease,
@@ -187,6 +191,7 @@
         }
 
         .memberButton {
+            max-width: 110px;
             padding: 10px 12px;
             font-size: 0.75rem;
         }

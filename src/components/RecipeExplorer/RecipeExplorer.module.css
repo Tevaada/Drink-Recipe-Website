@@ -215,3 +215,32 @@
         grid-template-columns: 1fr;
     }
 }
+
+.loadMoreArea {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.loadMoreButton {
+    min-width: 220px;
+    padding: 13px 24px;
+
+    color: #ffffff;
+    background-color: var(--green);
+    border: 0;
+    border-radius: 999px;
+
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.loadMoreButton:hover:not(:disabled) {
+    background-color: var(--green-light);
+}
+
+.loadMoreButton:disabled {
+    cursor: wait;
+    opacity: 0.65;
+}

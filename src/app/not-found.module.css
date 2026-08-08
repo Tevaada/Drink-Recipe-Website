@@ -1,0 +1,77 @@
+.page {
+    display: grid;
+    min-height: 70vh;
+    place-items: center;
+    padding: 4rem 1.5rem;
+    text-align: center;
+}
+
+.content {
+    display: grid;
+    justify-items: center;
+    max-width: 42rem;
+    gap: 1.25rem;
+}
+
+.code {
+    color: #3f7d58;
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+}
+
+.content h1 {
+    margin: 0;
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    line-height: 1;
+}
+
+.content p {
+    max-width: 34rem;
+    margin: 0;
+    color: #667085;
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+}
+
+.primaryLink,
+.secondaryLink {
+    padding: 0.85rem 1.25rem;
+    border-radius: 999px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.primaryLink {
+    background: #315c41;
+    color: white;
+}
+
+.primaryLink:hover {
+    background: #244a33;
+}
+
+.secondaryLink {
+    border: 1px solid #d0d5dd;
+    background: white;
+    color: #344054;
+}
+
+.secondaryLink:hover {
+    border-color: #3f7d58;
+    color: #315c41;
+}
+
+.primaryLink:focus-visible,
+.secondaryLink:focus-visible {
+    outline: 3px solid rgba(63, 125, 88, 0.25);
+    outline-offset: 3px;
+}

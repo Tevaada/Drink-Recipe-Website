@@ -1,0 +1,73 @@
+.page {
+    display: grid;
+    min-height: 65vh;
+    place-items: center;
+    padding: 4rem 1.5rem;
+    text-align: center;
+}
+
+.content {
+    display: grid;
+    justify-items: center;
+    max-width: 38rem;
+    gap: 1.25rem;
+}
+
+.eyebrow {
+    color: #b54708;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.content h1,
+.content p {
+    margin: 0;
+}
+
+.content h1 {
+    font-size: clamp(2rem, 6vw, 3.75rem);
+}
+
+.content p {
+    color: #667085;
+    line-height: 1.7;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.retryButton,
+.recipesLink {
+    padding: 0.85rem 1.25rem;
+    border-radius: 999px;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.retryButton {
+    border: 0;
+    background: #315c41;
+    color: white;
+}
+
+.recipesLink {
+    border: 1px solid #d0d5dd;
+    color: #344054;
+    text-decoration: none;
+}
+
+.retryButton:hover {
+    background: #244a33;
+}
+
+.recipesLink:hover {
+    border-color: #3f7d58;
+    color: #315c41;
+}

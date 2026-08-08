@@ -32,6 +32,7 @@ export default function Footer() {
                     <Link href="/recipes">Formulations</Link>
                     <Link href="/favorites">The Vault</Link>
                     <Link href="/about">The Vision</Link>
+                    <Link href="/contact">Contact Us</Link>
                 </nav>
 
                 <section className={styles.locationSection}>
