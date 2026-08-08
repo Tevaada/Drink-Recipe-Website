@@ -8,7 +8,7 @@ import {
     resendConfirmation,
     signUpAccount,
 } from "@/app/member/actions";
-import {migrateGuestFavorites,} from "@/services/memberFavorites";
+import { migrateGuestFavorites } from "@/services/memberFavorites";
 import styles from "./MemberForm.module.css";
 
 export default function MemberForm() {
@@ -91,6 +91,7 @@ export default function MemberForm() {
                 form.reset();
 
                 if (!result.needsEmailConfirmation) {
+                    router.push("/account");
                     router.refresh();
                 }
             } catch (signupError) {
@@ -131,6 +132,7 @@ export default function MemberForm() {
             );
 
             form.reset();
+            router.push("/account");
             router.refresh();
         } catch (loginError) {
             setError(

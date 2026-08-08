@@ -1,5 +1,8 @@
 import { createClient } from "@/lib/supabase/client";
-import { clearFavorites, getFavorites,} from "@/services/favorites";
+import {
+    clearFavorites,
+    getFavorites,
+} from "@/services/favorites";
 
 function normalizeFavorite(row) {
     return {

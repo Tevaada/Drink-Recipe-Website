@@ -6,21 +6,20 @@ export function getFavorites() {
     }
 
     try {
-        const storedValue =
-        localStorage.getItem(STORAGE_KEY);
+        const storedValue = localStorage.getItem(STORAGE_KEY);
 
         if (!storedValue) {
-        return [];
+            return [];
         }
 
         const favorites = JSON.parse(storedValue);
 
         return Array.isArray(favorites)
-        ? favorites
-        : [];
+            ? favorites
+            : [];
     } catch {
         return [];
-    }
+}
     }
 
 export function isFavorite(recipeId) {
@@ -43,9 +42,11 @@ export function toggleFavorite(recipe) {
         : [...favorites, recipe];
 
     try {
-        localStorage.setItem( STORAGE_KEY, JSON.stringify(updatedFavorites));
-        window.dispatchEvent( new Event("favoriteschange") , );
-        
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(updatedFavorites),
+        );
+        window.dispatchEvent(new Event("favoriteschange"));
     } catch {
         throw new Error(
             "Favorites could not be saved in this browser.",
@@ -56,6 +57,7 @@ export function toggleFavorite(recipe) {
         favorites: updatedFavorites,
     };
 }
+
 export function clearFavorites() {
     if (typeof window === "undefined") {
         return;

@@ -3,7 +3,7 @@ import styles from "./not-found.module.css";
 
 export default function NotFound() {
     return (
-        <main className={styles.page}>
+        <div className={styles.page}>
             <div className={styles.content}>
                 <span className={styles.code}>
                     404
@@ -32,6 +32,6 @@ export default function NotFound() {
                     </Link>
                 </div>
             </div>
-        </main>
+        </div>
     );
 }

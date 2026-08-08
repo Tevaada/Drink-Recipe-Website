@@ -3,7 +3,7 @@ import styles from "./MemberAccount.module.css";
 import ProfileEditor from "@/components/ProfileEditor/ProfileEditor";
 import DeleteAccountButton from "@/components/DeleteAccountButton/DeleteAccountButton";
 
-export default function MemberAccount({user, profile,}) {
+export default function MemberAccount({ user, profile }) {
     const displayName =
     profile?.display_name ||
     user.user_metadata?.display_name ||

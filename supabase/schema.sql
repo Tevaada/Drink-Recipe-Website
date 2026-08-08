@@ -75,6 +75,11 @@ security definer
 set search_path = ''
 as $$
 begin
+    if auth.uid() is null then
+        raise exception 'Authentication required'
+            using errcode = '42501';
+    end if;
+
     if exists (
         select 1
         from public.contact_messages
@@ -99,9 +104,13 @@ revoke all
     on function public.submit_contact_message(text, text, text)
     from public;
 
+revoke execute
+    on function public.submit_contact_message(text, text, text)
+    from anon;
+
 grant execute
     on function public.submit_contact_message(text, text, text)
-    to anon, authenticated;
+    to authenticated;
 
 drop policy if exists
     "Members can read their profile"

@@ -5,7 +5,7 @@ import styles from "./error.module.css";
 
 export default function RecipeError({ reset }) {
     return (
-        <main className={styles.page}>
+        <div className={styles.page}>
             <div className={styles.content}>
                 <span className={styles.eyebrow}>
                     Recipe unavailable
@@ -35,6 +35,6 @@ export default function RecipeError({ reset }) {
                     </Link>
                 </div>
             </div>
-        </main>
+        </div>
     );
 }

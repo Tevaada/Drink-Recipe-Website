@@ -67,7 +67,8 @@ Run `npm run build` before `npm run start`.
 - `/recipes` — recipe search, filters, and load-more collection
 - `/recipes/[id]` — recipe details, nutrition, timer, and favorites
 - `/favorites` — guest or member favorites
-- `/member` — sign-up, login, and profile management
+- `/member` — sign-up and login
+- `/account` — signed-in profile and account management
 - `/about` — project vision
 - `/contact` — contact form
 

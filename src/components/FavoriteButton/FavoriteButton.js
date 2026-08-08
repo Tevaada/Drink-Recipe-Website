@@ -1,11 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {isFavorite, toggleFavorite,} from "@/services/favorites";
-import {isMemberFavorite, toggleMemberFavorite, } from "@/services/memberFavorites";
+import { isFavorite, toggleFavorite } from "@/services/favorites";
+import {
+    isMemberFavorite,
+    toggleMemberFavorite,
+} from "@/services/memberFavorites";
 import styles from "./FavoriteButton.module.css";
 
-export default function FavoriteButton({recipe, unsavedLabel = "Save",}) {
+export default function FavoriteButton({ recipe, unsavedLabel = "Save" }) {
     const [saved, setSaved] = useState(false);
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(true);

@@ -1,4 +1,6 @@
 import ContactForm from "@/components/ContactForm/ContactForm";
+import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
 import styles from "./page.module.css";
 
 export const metadata = {
@@ -7,9 +9,29 @@ export const metadata = {
         "Send a message to the Drink Recipe team.",
 };
 
-export default function ContactPage() {
+export default async function ContactPage() {
+    const supabase = await createClient();
+    const {
+        data: { user },
+    } = await supabase.auth.getUser();
+
+    let displayName = "";
+
+    if (user) {
+        const { data: profile } = await supabase
+            .from("profiles")
+            .select("display_name")
+            .eq("id", user.id)
+            .maybeSingle();
+
+        displayName =
+            profile?.display_name ||
+            user.user_metadata?.display_name ||
+            "";
+    }
+
     return (
-        <main className={styles.page}>
+        <div className={styles.page}>
             <section className={styles.introduction}>
                 <span className={styles.eyebrow}>
                     Contact us
@@ -44,8 +66,23 @@ export default function ContactPage() {
                 className={styles.formPanel}
                 aria-label="Contact form"
             >
-                <ContactForm />
+                {user ? (
+                    <ContactForm
+                        initialName={displayName}
+                        email={user.email || ""}
+                    />
+                ) : (
+                    <div className={styles.memberNotice}>
+                        <span>Member access</span>
+                        <h2>Sign in to send a message</h2>
+                        <p>
+                            Contact submissions are available to registered
+                            Drink Recipe members only.
+                        </p>
+                        <Link href="/member">Sign up or log in</Link>
+                    </div>
+                )}
             </section>
-        </main>
+        </div>
     );
 }

@@ -5,7 +5,7 @@ import RecipeCard from "@/components/RecipeCard/RecipeCard";
 import { loadDrinks } from "@/services/drinks";
 import styles from "./RecipeExplorer.module.css";
 
-export default function RecipeExplorer({initialCategory = "all",}) {
+export default function RecipeExplorer({ initialCategory = "all" }) {
     
     const [recipes, setRecipes] = useState([]);
     const [isLoading, setIsLoading] = useState(true);

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { submitContactMessage } from "@/app/contact/actions";
 import styles from "./ContactForm.module.css";
 
-export default function ContactForm() {
+export default function ContactForm({ initialName = "", email = "" }) {
     const [message, setMessage] = useState("");
     const [isError, setIsError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -39,7 +39,9 @@ export default function ContactForm() {
             form.reset();
         } catch {
             setIsError(true);
-            setMessage("Your message could not be sent. Please try again.");
+            setMessage(
+                "We could not send your message right now. Please try again in a few minutes.",
+            );
         } finally {
             setIsLoading(false);
         }
@@ -74,6 +76,7 @@ export default function ContactForm() {
                     type="text"
                     autoComplete="name"
                     maxLength={80}
+                    defaultValue={initialName}
                     required
                 />
             </div>
@@ -89,6 +92,8 @@ export default function ContactForm() {
                     type="email"
                     autoComplete="email"
                     maxLength={120}
+                    value={email}
+                    readOnly
                     required
                 />
             </div>

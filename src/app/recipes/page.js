@@ -5,7 +5,7 @@ export const metadata = {
     title: "Formulations | Drink Recipe",
     description: "Browse natural drink recipes for focus, recovery, hydration, and energy.",
 };
-export default async function RecipesPage({searchParams,}) {
+export default async function RecipesPage({ searchParams }) {
     const parameters = await searchParams;
 
     const initialCategory =parameters.category || "all";

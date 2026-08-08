@@ -44,6 +44,12 @@
     outline: 3px solid rgba(63, 125, 88, 0.15);
 }
 
+.field input:read-only {
+    color: #667085;
+    background: #f3f7f4;
+    cursor: not-allowed;
+}
+
 .submitButton {
     padding: 0.9rem 1.25rem;
     border: 0;

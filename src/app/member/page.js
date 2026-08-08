@@ -1,7 +1,7 @@
 import styles from "./page.module.css";
 import MemberForm from "@/components/MemberForm/MemberForm";
-import MemberAccount from "@/components/MemberAccount/MemberAccount";
 import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
 
 export const metadata = {
     title: "Member Profile | Drink Recipe",
@@ -12,17 +12,9 @@ export const metadata = {
 export default async function MemberPage() {
     const supabase = await createClient();
     const {data: { user },} = await supabase.auth.getUser();
-    
-    let profile = null;
 
     if (user) {
-        const { data } = await supabase
-            .from("profiles")
-            .select("display_name, wellness_goal")
-            .eq("id", user.id)
-            .maybeSingle();
-
-        profile = data;
+        redirect("/account");
     }
 
     return (
@@ -61,14 +53,7 @@ export default async function MemberPage() {
             </section>
 
             <section className={styles.formPanel}>
-                {user ? (
-                    <MemberAccount
-                        user={user}
-                        profile={profile}
-                    />
-                ) : (
-                    <MemberForm />
-                )}
+                <MemberForm />
             </section>
         </div>
     );

@@ -15,9 +15,19 @@ function isValidEmail(email) {
 
 export async function submitContactMessage(values) {
     const name = textValue(values?.name);
-    const email = textValue(values?.email).toLowerCase();
     const message = textValue(values?.message);
     const website = textValue(values?.website);
+
+    const supabase = await createClient();
+    const {
+        data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user?.email) {
+        return { error: "Please sign up or log in before sending a message." };
+    }
+
+    const email = user.email.trim().toLowerCase();
 
     if (website) {
         return {
@@ -40,7 +50,6 @@ export async function submitContactMessage(values) {
         };
     }
 
-    const supabase = await createClient();
     const { data: wasSubmitted, error } =
         await supabase.rpc("submit_contact_message", {
             submitter_name: name,
@@ -50,7 +59,7 @@ export async function submitContactMessage(values) {
 
     if (error) {
         return {
-            error: "Your message could not be sent. Please try again.",
+            error: "We could not send your message right now. Please try again in a few minutes.",
         };
     }
 

@@ -2,7 +2,7 @@ import styles from "./loading.module.css";
 
 export default function RecipeLoading() {
     return (
-        <main
+        <div
             className={styles.loading}
             aria-busy="true"
             aria-label="Loading recipe"
@@ -19,6 +19,6 @@ export default function RecipeLoading() {
                     Loading recipe details...
                 </span>
             </div>
-        </main>
+        </div>
     );
 }

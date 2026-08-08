@@ -1,26 +1,22 @@
-    import { NextResponse } from "next/server";
-    import { normalizeDrink } from "@/lib/drinks";
-    import {
-        DEFAULT_SEARCH_PAGES,
-        getCatalogTerms,
-    } from "@/lib/drinkCatalog";
+import { NextResponse } from "next/server";
+import { normalizeDrink } from "@/lib/drinks";
+import {
+    DEFAULT_SEARCH_PAGES,
+    getCatalogTerms,
+} from "@/lib/drinkCatalog";
 
-    const API_URL = "https://www.thecocktaildb.com/api/json/v1/1/search.php";
+const API_URL = "https://www.thecocktaildb.com/api/json/v1/1/search.php";
 
-    export async function GET(request) {
+export async function GET(request) {
     const query = request.nextUrl.searchParams.get("q")?.trim();
     const requestedPage = Number(
         request.nextUrl.searchParams.get("page") || "1",
     );
 
     if (query && query.length > 80) {
-            return NextResponse.json(
-            {
-                error: "The search query is too long.",
-            },
-            {
-                status: 400,
-            },
+        return NextResponse.json(
+            { error: "The search query is too long." },
+            { status: 400 },
         );
     }
 
@@ -42,14 +38,9 @@
     try {
         const responses = await Promise.allSettled(
             searchTerms.map((term) =>
-                fetch(
-                    `${API_URL}?s=${encodeURIComponent(term)}`,
-                    {
-                        next: {
-                            revalidate: 3600,
-                        },
-                    },
-                ),
+                fetch(`${API_URL}?s=${encodeURIComponent(term)}`, {
+                    next: { revalidate: 3600 },
+                }),
             ),
         );
 
@@ -68,14 +59,13 @@
         const payloads = await Promise.all(
             successfulResponses.map((response) => response.json()),
         );
-
         const uniqueDrinks = new Map();
 
         payloads
             .flatMap((payload) => payload.drinks ?? [])
             .forEach((drink) => {
-            uniqueDrinks.set(drink.idDrink, drink);
-        });
+                uniqueDrinks.set(drink.idDrink, drink);
+            });
 
         const drinks = [...uniqueDrinks.values()]
             .slice(0, 24)
@@ -90,12 +80,8 @@
         });
     } catch {
         return NextResponse.json(
-            {
-                error: "Drink recipes are temporarily unavailable.",
-            },
-            {
-                status: 502,
-            },
+            { error: "Drink recipes are temporarily unavailable." },
+            { status: 502 },
         );
     }
 }
