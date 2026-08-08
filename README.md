@@ -21,6 +21,7 @@ A Next.js drink-discovery website built with TheCocktailDB, USDA FoodData Centra
    ```env
    NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_your-key
+   NEXT_PUBLIC_SITE_URL=http://localhost:3000
    USDA_API_KEY=your-data-gov-key
    ```
 
@@ -35,6 +36,18 @@ A Next.js drink-discovery website built with TheCocktailDB, USDA FoodData Centra
    ```
 
 Open [http://localhost:3000](http://localhost:3000).
+
+## Deploying from GitHub
+
+1. Create an empty GitHub repository without adding a README, `.gitignore`, or license.
+2. Add the repository as this project's `origin` remote and push the `main` branch.
+3. Import the GitHub repository into your hosting provider.
+4. Add all variables from `.env.example` to the hosting provider. Set
+   `NEXT_PUBLIC_SITE_URL` to the deployed HTTPS URL.
+5. In Supabase Authentication URL Configuration, change the Site URL to the
+   deployed URL and add `https://your-domain.example/**` as a redirect URL.
+
+Never upload `.env.local` or a Supabase service-role key.
 
 ## Commands
 
