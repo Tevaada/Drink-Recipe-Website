@@ -19,6 +19,7 @@ export default function ContactForm() {
             name: formData.get("name")?.trim(),
             email: formData.get("email")?.trim(),
             message: formData.get("message")?.trim(),
+            website: formData.get("website")?.trim(),
         };
 
         setMessage("");
@@ -49,6 +50,19 @@ export default function ContactForm() {
             className={styles.form}
             onSubmit={handleSubmit}
         >
+            <div className={styles.honeypot} aria-hidden="true">
+                <label htmlFor="contact-website">
+                    Website
+                </label>
+                <input
+                    id="contact-website"
+                    name="website"
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                />
+            </div>
+
             <div className={styles.field}>
                 <label htmlFor="contact-name">
                     Name

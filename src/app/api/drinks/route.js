@@ -1,13 +1,11 @@
     import { NextResponse } from "next/server";
     import { normalizeDrink } from "@/lib/drinks";
+    import {
+        DEFAULT_SEARCH_PAGES,
+        getCatalogTerms,
+    } from "@/lib/drinkCatalog";
 
     const API_URL = "https://www.thecocktaildb.com/api/json/v1/1/search.php";
-    const DEFAULT_SEARCH_PAGES = [
-        ["mojito", "margarita", "lemonade", "coffee"],
-        ["gin", "vodka", "rum", "tequila"],
-        ["whiskey", "brandy", "champagne", "beer"],
-        ["lime", "orange", "pineapple", "coconut"],
-    ];
 
     export async function GET(request) {
     const query = request.nextUrl.searchParams.get("q")?.trim();
@@ -39,7 +37,7 @@
 
     const searchTerms = query
         ? [query]
-        : DEFAULT_SEARCH_PAGES[requestedPage - 1];
+        : getCatalogTerms(requestedPage);
 
     try {
         const responses = await Promise.allSettled(

@@ -17,6 +17,14 @@ export async function submitContactMessage(values) {
     const name = textValue(values?.name);
     const email = textValue(values?.email).toLowerCase();
     const message = textValue(values?.message);
+    const website = textValue(values?.website);
+
+    if (website) {
+        return {
+            success: true,
+            message: "Thank you. Your message has been received.",
+        };
+    }
 
     if (!name || name.length > 80) {
         return { error: "Please enter a valid name." };
@@ -33,13 +41,23 @@ export async function submitContactMessage(values) {
     }
 
     const supabase = await createClient();
-    const { error } = await supabase
-        .from("contact_messages")
-        .insert({ name, email, message });
+    const { data: wasSubmitted, error } =
+        await supabase.rpc("submit_contact_message", {
+            submitter_name: name,
+            submitter_email: email,
+            submitted_message: message,
+        });
 
     if (error) {
         return {
             error: "Your message could not be sent. Please try again.",
+        };
+    }
+
+    if (!wasSubmitted) {
+        return {
+            error:
+                "Please wait a few minutes before sending another message.",
         };
     }
 

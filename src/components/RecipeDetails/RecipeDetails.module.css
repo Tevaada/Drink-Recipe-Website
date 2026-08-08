@@ -5,10 +5,12 @@
     align-items: start;
 }
 
-.imageWrapper {
-    position: sticky;
-    top: 100px;
+.visualColumn {
+    display: grid;
+    gap: 24px;
+}
 
+.imageWrapper {
     overflow: hidden;
     background-color: #f0f1ee;
     border-radius: 24px;
@@ -116,10 +118,42 @@
 }
 
 .instructions {
+    display: grid;
+    gap: 14px;
+    list-style: none;
+}
+
+.instructions li {
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 14px;
+    align-items: start;
+    padding: 16px;
+
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+}
+
+.instructions span {
+    width: 34px;
+    height: 34px;
+
+    display: grid;
+    place-items: center;
+
+    color: var(--green);
+    background-color: var(--lime);
+    border-radius: 50%;
+
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.instructions p {
+    padding-top: 5px;
     color: var(--text-soft);
-    font-size: 1rem;
-    line-height: 1.8;
-    white-space: pre-line;
+    line-height: 1.65;
 }
 
 .favoriteAction {
@@ -130,9 +164,6 @@
         grid-template-columns: 1fr;
     }
 
-    .imageWrapper {
-        position: static;
-    }
 }
 
 @media (max-width: 620px) {

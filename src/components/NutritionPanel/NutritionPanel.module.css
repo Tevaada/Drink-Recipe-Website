@@ -1,14 +1,17 @@
 .panel {
     display: grid;
     gap: 1rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid #e4e7ec;
+    padding: 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
 }
 
 .heading {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    align-items: stretch;
+    flex-direction: column;
     gap: 1rem;
 }
 
@@ -23,8 +26,13 @@
     color: #667085;
 }
 
+.heading h2 {
+    color: var(--green);
+    font-size: 1.35rem;
+}
+
 .button {
-    flex-shrink: 0;
+    width: fit-content;
     padding: 0.75rem 1rem;
     border: 1px solid #315c41;
     border-radius: 999px;
@@ -55,7 +63,7 @@
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.75rem;
 }
 
@@ -85,12 +93,11 @@
 }
 
 @media (max-width: 40rem) {
-    .heading {
-        align-items: stretch;
-        flex-direction: column;
+    .panel {
+        padding: 1.25rem;
     }
 
-    .grid {
-        grid-template-columns: repeat(2, 1fr);
+    .button {
+        width: 100%;
     }
 }

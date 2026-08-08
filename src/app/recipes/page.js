@@ -22,8 +22,8 @@ export default async function RecipesPage({searchParams,}) {
                 </h1>
 
                 <p className={styles.description}>
-                Explore botanical drink recipes designed for focus,
-                recovery, hydration, and everyday energy.
+                Explore a curated collection of cocktails,
+                alcohol-free drinks, coffee recipes, and more.
                 </p>
             </header>
 

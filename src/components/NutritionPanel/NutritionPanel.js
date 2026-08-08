@@ -57,8 +57,8 @@ export default function NutritionPanel({ drinkName }) {
                     </h2>
 
                     <p>
-                        Find the closest USDA match for
-                        this drink.
+                        Name-based USDA estimate; ingredient
+                        quantities are not calculated.
                     </p>
                 </div>
 

@@ -56,6 +56,30 @@ function signUpErrorMessage(error) {
     );
 }
 
+function authenticationErrorMessage(error) {
+    const messages = {
+        email_not_confirmed:
+            "Confirm your email before logging in.",
+        over_request_rate_limit:
+            "Too many requests were made. Please wait a few minutes and try again.",
+        over_email_send_rate_limit:
+            "Too many emails were requested. Please wait a few minutes and try again.",
+    };
+
+    return (
+        messages[error?.code] ||
+        "The email or password is incorrect."
+    );
+}
+
+function authenticationCallback(nextPath = "/member") {
+    const siteUrl =
+        process.env.NEXT_PUBLIC_SITE_URL ||
+        "http://localhost:3000";
+
+    return `${siteUrl}/auth/callback?next=${encodeURIComponent(nextPath)}`;
+}
+
 async function saveProfile(supabase, user) {
     const metadata = user.user_metadata || {};
 
@@ -121,6 +145,8 @@ export async function signUpAccount(values) {
             email,
             password,
             options: {
+                emailRedirectTo:
+                    authenticationCallback("/member"),
                 data: {
                     display_name: name,
                     wellness_goal: focusGoal,
@@ -219,7 +245,7 @@ export async function loginAccount(values) {
 
     if (error) {
         return {
-            error: "The email or password is incorrect.",
+            error: authenticationErrorMessage(error),
         };
     }
 
@@ -239,6 +265,89 @@ export async function loginAccount(values) {
         success: true,
         message:
             `You logged in successfully.${profileWarning}`,
+    };
+}
+
+export async function resendConfirmation(values) {
+    const email = textValue(values?.email);
+
+    if (!isValidEmail(email)) {
+        return { error: "Please enter a valid email address." };
+    }
+
+    const supabase = await createClient();
+    const { error } = await supabase.auth.resend({
+        type: "signup",
+        email,
+        options: {
+            emailRedirectTo:
+                authenticationCallback("/member"),
+        },
+    });
+
+    if (error) {
+        return { error: authenticationErrorMessage(error) };
+    }
+
+    return {
+        success: true,
+        message:
+            "If the account is waiting for confirmation, a new email has been sent.",
+    };
+}
+
+export async function requestPasswordReset(values) {
+    const email = textValue(values?.email);
+
+    if (!isValidEmail(email)) {
+        return { error: "Please enter a valid email address." };
+    }
+
+    const supabase = await createClient();
+    const { error } =
+        await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo:
+                authenticationCallback("/member/reset-password"),
+        });
+
+    if (error) {
+        return { error: authenticationErrorMessage(error) };
+    }
+
+    return {
+        success: true,
+        message:
+            "If an account exists for that email, a password-reset link has been sent.",
+    };
+}
+
+export async function updatePassword(values) {
+    const password = passwordValue(values?.password);
+
+    if (password.length < 6 || password.length > 128) {
+        return {
+            error:
+                "Your password must contain between 6 and 128 characters.",
+        };
+    }
+
+    const supabase = await createClient();
+    const { error } = await supabase.auth.updateUser({
+        password,
+    });
+
+    if (error) {
+        return {
+            error:
+                "The password-reset session is invalid or expired. Request a new link.",
+        };
+    }
+
+    revalidatePath("/", "layout");
+
+    return {
+        success: true,
+        message: "Your password has been updated successfully.",
     };
 }
 
@@ -292,7 +401,7 @@ export async function updateProfile(values) {
         };
     }
 
-    revalidatePath("/member");
+    revalidatePath("/", "layout");
 
     return {
         success: true,

@@ -144,3 +144,30 @@
 .switchButton:hover {
     text-decoration: underline;
 }
+
+.accountHelp {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    margin-top: 14px;
+}
+
+.accountHelp button {
+    padding: 4px;
+    color: var(--green-light);
+    background: transparent;
+    border: 0;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.accountHelp button:hover:not(:disabled) {
+    text-decoration: underline;
+}
+
+.accountHelp button:disabled {
+    cursor: wait;
+    opacity: 0.6;
+}

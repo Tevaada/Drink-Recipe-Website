@@ -3,6 +3,14 @@
     gap: 1.25rem;
 }
 
+.honeypot {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
 .field {
     display: grid;
     gap: 0.45rem;

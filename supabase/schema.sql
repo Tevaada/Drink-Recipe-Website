@@ -64,12 +64,44 @@ drop policy if exists
     "Visitors can submit contact messages"
     on public.contact_messages;
 
-create policy
-    "Visitors can submit contact messages"
-    on public.contact_messages
-    for insert
-    to anon, authenticated
-    with check (true);
+create or replace function public.submit_contact_message(
+    submitter_name text,
+    submitter_email text,
+    submitted_message text
+)
+returns boolean
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+    if exists (
+        select 1
+        from public.contact_messages
+        where lower(email) = lower(trim(submitter_email))
+          and created_at > now() - interval '5 minutes'
+    ) then
+        return false;
+    end if;
+
+    insert into public.contact_messages (name, email, message)
+    values (
+        trim(submitter_name),
+        lower(trim(submitter_email)),
+        trim(submitted_message)
+    );
+
+    return true;
+end;
+$$;
+
+revoke all
+    on function public.submit_contact_message(text, text, text)
+    from public;
+
+grant execute
+    on function public.submit_contact_message(text, text, text)
+    to anon, authenticated;
 
 drop policy if exists
     "Members can read their profile"

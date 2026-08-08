@@ -3,25 +3,36 @@ import styles from "./RecipeDetails.module.css";
 import FavoriteButton from "@/components/FavoriteButton/FavoriteButton";
 import NutritionPanel from "@/components/NutritionPanel/NutritionPanel";
 import PreparationTimer from "@/components/PreparationTimer/PreparationTimer";
+import { getInstructionSteps } from "@/lib/instructions";
 
 export default function RecipeDetails({ drink }) {
+    const instructionSteps = getInstructionSteps(
+        drink.instructions,
+    );
+
     return (
         <article className={styles.details}>
-            <div className={styles.imageWrapper}>
-                {drink.image ? (
-                <Image
-                    className={styles.image}
-                    src={drink.image}
-                    alt={drink.title}
-                    width={900}
-                    height={700}
-                    priority
-                />
-                ) : (
-                <div className={styles.imageFallback}>
-                    Image unavailable
+            <div className={styles.visualColumn}>
+                <div className={styles.imageWrapper}>
+                    {drink.image ? (
+                    <Image
+                        className={styles.image}
+                        src={drink.image}
+                        alt={drink.title}
+                        width={900}
+                        height={700}
+                        priority
+                    />
+                    ) : (
+                    <div className={styles.imageFallback}>
+                        Image unavailable
+                    </div>
+                    )}
                 </div>
-                )}
+
+                <PreparationTimer />
+
+                <NutritionPanel drinkName={drink.title} />
             </div>
 
             <div className={styles.content}>
@@ -75,14 +86,15 @@ export default function RecipeDetails({ drink }) {
                     Instructions
                 </h2>
 
-                <p className={styles.instructions}>
-                    {drink.instructions}
-                </p>
+                <ol className={styles.instructions}>
+                    {instructionSteps.map((step, index) => (
+                        <li key={`${index}-${step}`}>
+                            <span>{index + 1}</span>
+                            <p>{step}</p>
+                        </li>
+                    ))}
+                </ol>
                 </section>
-
-                <PreparationTimer />
-
-                <NutritionPanel drinkName={drink.title} />
             </div>
         </article>
     );

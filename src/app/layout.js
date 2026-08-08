@@ -14,15 +14,24 @@ export default async function RootLayout({ children }) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const headerUser = user
-    ? {
-        id: user.id,
-        displayName:
-          user.user_metadata?.display_name?.trim() ||
-          user.email?.split("@")[0] ||
-          "Member",
-      }
-    : null;
+  let headerUser = null;
+
+  if (user) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("display_name")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    headerUser = {
+      id: user.id,
+      displayName:
+        profile?.display_name?.trim() ||
+        user.user_metadata?.display_name?.trim() ||
+        user.email?.split("@")[0] ||
+        "Member",
+    };
+  }
 
   return (
     <html lang="en" data-scroll-behavior="smooth">

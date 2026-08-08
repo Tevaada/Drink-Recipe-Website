@@ -116,11 +116,11 @@ export default function RecipeExplorer({initialCategory = "all",}) {
         <section className={styles.recipeSection} aria-labelledby="all-recipes-title">
             <div className={styles.sectionHeading}>
                 <h2 id="all-recipes-title" className={styles.sectionTitle}>
-                    All recipes
+                    Curated recipe collection
                 </h2>
                 
                 <span className={styles.recipeCount}>
-                    {filteredRecipes.length} recipes
+                    {filteredRecipes.length} loaded
                 </span>
             </div>
 

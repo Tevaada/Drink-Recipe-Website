@@ -1,17 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import {loginAccount, signUpAccount,} from "@/app/member/actions";
+import {
+    loginAccount,
+    requestPasswordReset,
+    resendConfirmation,
+    signUpAccount,
+} from "@/app/member/actions";
 import {migrateGuestFavorites,} from "@/services/memberFavorites";
 import styles from "./MemberForm.module.css";
 
 export default function MemberForm() {
     const router = useRouter();
+    const formRef = useRef(null);
     const [mode, setMode] = useState("signup");
     const [error, setError] = useState("");
     const [message, setMessage] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [secondaryAction, setSecondaryAction] = useState("");
 
     function changeMode(nextMode) {
         setMode(nextMode);
@@ -136,6 +143,32 @@ export default function MemberForm() {
         }
     }
 
+    async function handleEmailAction(actionName) {
+        const formData = new FormData(formRef.current);
+        const email = formData.get("email")?.trim();
+        const action = actionName === "reset"
+            ? requestPasswordReset
+            : resendConfirmation;
+
+        setError("");
+        setMessage("");
+        setSecondaryAction(actionName);
+
+        try {
+            const result = await action({ email });
+
+            if (result.error) {
+                setError(result.error);
+            } else {
+                setMessage(result.message);
+            }
+        } catch {
+            setError("Unable to complete the request. Please try again.");
+        } finally {
+            setSecondaryAction("");
+        }
+    }
+
     return (
         <div>
             <div className={styles.tabs} aria-label="Account form type">
@@ -155,7 +188,7 @@ export default function MemberForm() {
                 <p> {mode === "signup" ? "Enter your details to begin your collection." : "Enter your account details to continue."} </p>
             </div>
 
-            <form className={styles.form} onSubmit={handleSubmit}>
+            <form ref={formRef} className={styles.form} onSubmit={handleSubmit}>
                 {mode === "signup" && (
                 <div className={styles.field}>
                     <label htmlFor="member-name">
@@ -239,6 +272,18 @@ export default function MemberForm() {
                         : "Log in"}
                 </button>
             </form>
+
+            {mode === "login" && (
+                <div className={styles.accountHelp}>
+                    <button type="button" onClick={() => handleEmailAction("reset")} disabled={isLoading || Boolean(secondaryAction)}>
+                        {secondaryAction === "reset" ? "Sending reset link..." : "Forgot password?"}
+                    </button>
+
+                    <button type="button" onClick={() => handleEmailAction("resend")} disabled={isLoading || Boolean(secondaryAction)}>
+                        {secondaryAction === "resend" ? "Sending confirmation..." : "Resend confirmation email"}
+                    </button>
+                </div>
+            )}
 
             <button type="button" className={styles.switchButton} onClick={() => changeMode(mode === "signup" ? "login" : "signup",)} disabled={isLoading}>
                 {mode === "signup"
